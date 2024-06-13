@@ -58,19 +58,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         // 로직을 구현해야하니까 잠깐 멈추는 식으로 false
         const { name, email } = user;
         await connectDB();
-        const existingUser = await User.findOne({ authProviderId: user.id });
+        const existingUser = await User.findOne({ email, authProviderId: 'github' });
 
         // 위에 id가 없다면 소셜 가입 ㄱ
         if (!existingUser) {
           await new User({
             name,
             email,
-            authProviderId: user.id,
+            authProviderId: 'github',
             role: 'user',
           }).save();
         }
         // 있다면 한번 user.id값을 조회해서 확인
-        const socialUser = await User.findOne({ authProviderId: user.id });
+        const socialUser = await User.findOne({ email, authProviderId: 'github' });
 
         // user.role = socialUser?.role || 'user';
         user.id = socialUser?._id || null;
