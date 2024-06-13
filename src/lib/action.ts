@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation';
 import connectDB from './db';
 import { User } from './schema';
 import { hash } from 'bcryptjs';
-import { signIn } from '@/auth';
+import { signIn, signOut } from '@/auth';
 
 // 회원가입
 export const register = async (formData: FormData) => {
@@ -59,4 +59,8 @@ export const login = async (formData: FormData) => {
 // github 로그인 방법
 export const githubLogin = async () => {
   await signIn('github', { callbackUrl: '/' });
+};
+
+export const logout = async () => {
+  await signOut();
 };
